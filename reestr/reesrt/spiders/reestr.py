@@ -4,9 +4,9 @@ import json
 import csv
 import sys
 from scrapy import Selector
-from parser_semenoff.items import RosreestrItem
+from reestr.items import reestrItem
 class AsosSpider(scrapy.Spider):
-    name = "rosreestr"
+    name = "reestr"
 
     def start_requests(self):
         url = 'http://pkk5.rosreestr.ru/api/features/1?text=%D0%92%20%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0%D1%85%20%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%D0%B0%2061:44&tolerance=10000&limit=100000&sqo=61:44&sqot=3'
@@ -14,7 +14,7 @@ class AsosSpider(scrapy.Spider):
 
     def parse(self, response):
         print response.body
-        adress = RosreestrItem()
+        adress = ReestrItem()
         json_reestr = json.loads(response.body)
         for item in json_reestr['features']:
             if item['attrs']['address']:
