@@ -1,10 +1,7 @@
 # coding: utf8
 import scrapy
 import json
-import csv
-import sys
-from scrapy import Selector
-from reestr.items import reestrItem
+from rosreestr.items import RosreestrItem
 class AsosSpider(scrapy.Spider):
     name = "reestr"
 
@@ -14,7 +11,7 @@ class AsosSpider(scrapy.Spider):
 
     def parse(self, response):
         print response.body
-        adress = ReestrItem()
+        adress = RosreestrItem()
         json_reestr = json.loads(response.body)
         for item in json_reestr['features']:
             if item['attrs']['address']:

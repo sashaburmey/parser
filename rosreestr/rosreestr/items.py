@@ -7,11 +7,10 @@
 
 import scrapy
 
-
-class ReestrItem(scrapy.Item):
+class RosreestrItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     address = scrapy.Field()
     lon = scrapy.Field()
-    lan =scrapy.Field()
+    lan = scrapy.Field()
     pass
