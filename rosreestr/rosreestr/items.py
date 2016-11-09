@@ -12,5 +12,5 @@ class RosreestrItem(scrapy.Item):
     # name = scrapy.Field()
     address = scrapy.Field()
     lon = scrapy.Field()
-    lan = scrapy.Field()
+    lat = scrapy.Field()
     pass
