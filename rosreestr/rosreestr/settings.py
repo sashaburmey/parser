@@ -67,7 +67,7 @@ ROBOTSTXT_OBEY = True
 #ITEM_PIPELINES = {
 #    'rosreestr.pipelines.SomePipeline': 300,
 #}
-
+ITEM_PIPELINES = {'rosreestr.pipelines.JsonWithEncodingPipeline': 300}
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
