@@ -1,22 +1,33 @@
 # coding: utf8
 import scrapy
 import json
+import re
 from rosreestr.items import RosreestrItem
 class AsosSpider(scrapy.Spider):
     name = "reestr"
 
     def start_requests(self):
-        url = 'http://pkk5.rosreestr.ru/api/features/1?text=%D0%92%20%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0%D1%85%20%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%D0%B0%2061:44&tolerance=512&limit=100&sqo=61:44&sqot=3'
-        yield scrapy.Request(url=url, callback=self.parse)
+        lats = range(471548,473687,2)
+        lons = range(394085,398493,2)
+        for lat in lats:
+            for lon in lons :
+                kord = {}
+                lonf = float(lon) / 10000
+                latf = float(lat) / 10000
+                kord['lat'] = latf
+                kord['lon'] = lonf
+                url = 'http://pkk5.rosreestr.ru/api/features/1?text='+str(latf)+'%20'+str(lonf)+'&tolerance=32&limit=10'
+                yield scrapy.Request(url=url, callback=self.parse, meta={'kord': kord})
 
     def parse(self, response):
-
+        koord = response.meta['kord']
         json_reestr = json.loads(response.body)
         for item in json_reestr['features']:
             adress = RosreestrItem()
             if item['attrs']['address']:
-                str = item['attrs']['address']
-                adress['address'] = str
-                adress['lat'] = item['center']['x']
-                adress['lon'] = item['center']['y']
-                yield adress
+                if re.match(r'61:44',item['attrs']['cn']):
+                    adress['address'] = item['attrs']['address']
+                    adress['lat'] = koord['lat']
+                    adress['lon'] = koord['lon']
+                    yield adress
+

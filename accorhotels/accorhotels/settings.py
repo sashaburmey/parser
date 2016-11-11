@@ -49,7 +49,7 @@ ROBOTSTXT_OBEY = False
 #SPIDER_MIDDLEWARES = {
 #    'accorhotels.middlewares.MyCustomSpiderMiddleware': 543,
 #}
-
+LOG_LEVEL='ERROR'
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {

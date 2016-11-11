@@ -4,8 +4,9 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import json
-import codecs
+from json import  dumps
+from codecs import getwriter
+from sys import stdout
 import datetime
 
 class RosreestrPipeline(object):
@@ -13,17 +14,12 @@ class RosreestrPipeline(object):
         return item
 
 class JsonWithEncodingPipeline(object):
-
     def __init__(self):
-        now = datetime.datetime.now()
-        now = now.strftime("%d%m%Y%H%M")
-        self.file = codecs.open('rosreestr_'+now+'.json', 'w', "utf-8")
-
+        self.reestr = set()
     def process_item(self, item, spider):
-        item['address'] = item['address']
-        line = json.dumps(dict(item), ensure_ascii=False) + ","
-        self.file.write(line)
+        sout = getwriter("utf8")(stdout)
+        if not item['address'] in self.reestr:
+            self.reestr.add(item['address'])
+            sout.write(dumps(dict(item), ensure_ascii=False) + "\n")
         return item
 
-    def spider_closed(self, spider):
-        self.file.close()
