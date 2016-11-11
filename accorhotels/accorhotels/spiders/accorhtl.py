@@ -2,19 +2,17 @@
 import scrapy
 import json
 from accorhotels.items import AccorhotelsItem
-class AsosSpider(scrapy.Spider):
+
+class AccordSpider(scrapy.Spider):
     handle_httpstatus_list = [300]
     name = "accor"
-    count = 0
     def start_requests(self):
         url = 'https://secure.accorhotels.com/rest/v2.0/accorhotels.com/hotels?geoCode=PFR&geoType=PA'
         yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
         json_accord = json.loads(response.body)
-
         for item in json_accord['zone']['child']:
-            self.count = self.count + int(item['brandHotelNb'])
             url = 'https://secure.accorhotels.com/rest'+item['href']
             yield scrapy.Request(url=url, callback=self.parse1)
 
@@ -29,14 +27,21 @@ class AsosSpider(scrapy.Spider):
                 accord_item = AccorhotelsItem()
                 accord_item['name'] = item['name']
                 accord_item['address'] = item['address']['country']+', '+item['address']['town']+', '+item['address']['street']
-                accord_item['lat'] = item['address']['geoLoc']['latitude']
-                accord_item['lon'] = item['address']['geoLoc']['longitude']
+                if item['address']['geoLoc']:
+                    accord_item['lat'] = float(item['address']['geoLoc']['latitude'])
+                    accord_item['lon'] = float(item['address']['geoLoc']['longitude'])
+                else:
+                    accord_item['lat'] = 0
+                    accord_item['lon'] = 0
                 if item['appartHotel']== True:
                     accord_item['category'] = 'appartment'
                 else:
                     accord_item['category'] = 'hotel'
-                url = 'http://www.accorhotels.com/fr/hotel-'+str(item['code'])+'-'+item['name'].replace(' ','-')+'/index.shtml'
-                accord_item['url'] = item['bookUrl']
+                url = 'https://www.accorhotels.com/fr/hotel-'+str(item['code'])+'-'+item['name'].replace(' ','-')+'/index.shtml'
+                if item['bookUrl']:
+                    accord_item['url'] = item['bookUrl']
+                else:
+                    accord_item['url'] = ' '
                 atrr = []
                 for k in item['amenities']:
                     atrr.append(k['label'])
@@ -47,6 +52,5 @@ class AsosSpider(scrapy.Spider):
     def parse2(self, response):
         accord_item = response.meta['accord_item']
         accord_item['link'] = response.url
-        accord_item['phone'] = response.xpath(".//meta[@itemprop='telephone']/@content").extract_first()
-        print self.count
+        accord_item['phone'] = response.xpath(".//meta[@itemprop='telephone']/@content").extract_first(default=' ')
         yield accord_item

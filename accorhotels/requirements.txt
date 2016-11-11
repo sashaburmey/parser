@@ -1,1 +1,2 @@
 scrapy==1.2
+jsonschema==2.5.1

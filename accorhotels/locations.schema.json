@@ -1,0 +1,92 @@
+{
+	"$schema" : "http://json-schema.org/draft-04/schema#",
+	"type" : "object",
+	"title" : "Визитки организаций",
+	"properties" : {
+		"category" : {
+			"type" : "string",
+			"title" : "Категория"
+		},
+		"name" : {
+			"type" : "string",
+			"title" : "Название"
+		},
+		"address" : {
+			"type" : "string",
+			"title" : "Адрес"
+		},
+		"phone" : {
+			"type" : "string",
+			"title" : "Телефон"
+		},
+		"url" : {
+			"title" : "Cсылка на ОФИЦ. САЙТ заведения",
+			"oneOf" : [{
+					"type" : "string"
+
+				}, {
+					"type" : "string",
+					"maxLength" : 0
+				}
+			]
+		},
+		"reviews" : {
+			"title" : "Количество отзывов",
+			"oneOf" : [{
+					"type" : "integer"
+				}, {
+					"type" : "string",
+					"maxLength" : 0
+				}
+			]
+		},
+		"link" : {
+			"title" : "Ссылка на страницу организации на агрегаторе",
+			"oneOf" : [{
+					"type" : "string",
+					"pattern" : "^http?://"
+				}, {
+					"type" : "string",
+					"maxLength" : 0
+				}
+			]
+		},
+		"lat" : {
+			"oneOf" : [{
+					"type" : "number"
+				}, {
+					"type" : "string",
+					"maxLength" : 0
+				}
+			],
+			"title" : "Широта"
+		},
+
+		"lon" : {
+			"oneOf" : [{
+					"type" : "number"
+				}, {
+					"type" : "string",
+					"maxLength" : 0
+				}
+			],
+			"title" : "Долгота"
+		},
+		"attributes" : {
+			"type" : "string",
+			"title" : "Атрибуты / теги"
+		}
+	},
+	"additionalProperties" : false,
+	"required" : [
+		"category",
+		"name",
+		"address",
+		"phone",
+		"url",
+		"link",
+		"lon",
+		"lat",
+		"attributes"
+	]
+}
