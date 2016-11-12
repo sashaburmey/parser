@@ -11,12 +11,12 @@ from sys import stdout
 import logging
 import  jsonschema
 
+class SocietPipeline(object):
 
-class AccorhotelsPipeline(object):
     def __init__(self):
         self.sout = getwriter("utf8")(stdout)
         logger = logging.getLogger()
-        self.reestr = set()
+        self.soceite = set()
         try:
             self.schema = open("locations.schema.json").read()
         except:
@@ -26,13 +26,11 @@ class AccorhotelsPipeline(object):
         logger = logging.getLogger()
         try:
             jsonschema.validate(dict(item), json.loads(self.schema))
-            if not item['link'] in self.reestr:
-                self.reestr.add(item['link'])
+            if not item['link'] in self.soceite:
+                self.soceite.add(item['link'])
                 self.sout.write(dumps(dict(item), ensure_ascii=False) + "\n")
         except jsonschema.ValidationError as e:
             logger.error(e.message + ' ' + item['link'] )
         except jsonschema.SchemaError as e:
             logger.error(e)
         return item
-
-

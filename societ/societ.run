@@ -1,0 +1,7 @@
+{
+  "type": "scraper",
+  "runtime": "python-2.7",
+  "data_format": "json",
+  "data_schema": "locations.schema.json",
+  "command": "scrapy crawl societ"
+}
